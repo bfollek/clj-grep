@@ -13,17 +13,12 @@
    :line-numbers (string/includes? flags "-n")
    :only-names (string/includes? flags "-l")})
 
-
-; TODO This is ugly. Can I thread it?
 (defn load-pattern
   [pattern options]
-  (let [pattern (if (:ignore-case options)
-                  (string/lower-case pattern)
-                  pattern)
-        pattern (if (:entire-lines options)
-                  (str pattern \newline) ; lines have trailing newlines
-                  pattern)]
-    pattern))
+  (cond-> pattern
+    (:ignore-case options) string/lower-case
+    ; Lines have trailing newlines, so add a newline to the pattern.
+    (:entire-lines options) (str \newline)))
 
 (defn load-state
   [pattern flags files]
