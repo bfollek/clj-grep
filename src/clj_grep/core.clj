@@ -1,17 +1,25 @@
 (ns clj-grep.core
   "grep"
   (:require [clojure.string :as string]
+            [clojure.tools.cli :as cli]
             [rabbithole.core :as rh]))
 
-; TODO Some way to map across coll of keywords, coll of flag values
-; use includes?, then (into) a map the keywords and bools?
+(def cli-options
+  ;; The long form becomes the keyword.
+  ;; :default false is necessary to set missing options.
+  [["-x" "--entire-lines" :default false]
+   ["-i" "--ignore-case" :default false]
+   ["-v" "--invert" :default false]
+   ["-n" "--line-numbers" :default false]
+   ["-l" "--only-names" :default false]])
+
 (defn load-options
   [flags]
-  {:entire-lines (string/includes? flags "-x")
-   :ignore-case (string/includes? flags "-i")
-   :invert (string/includes? flags "-v")
-   :line-numbers (string/includes? flags "-n")
-   :only-names (string/includes? flags "-l")})
+  (-> flags
+      (string/split #" ")
+      (cli/parse-opts cli-options)
+      ; Pull out the piece of the map we care about.
+      :options))
 
 (defn load-pattern
   [pattern options]
