@@ -2,7 +2,8 @@
   "grep"
   (:require [clojure.string :as string]
             [clojure.tools.cli :as cli]
-            [flatland.ordered.set :as fl]
+            [flatland.ordered.map :as flm]
+            [flatland.ordered.set :as fls]
             [rabbithole.core :as rh]))
 
 (defrecord Options [entire-lines ignore-case invert line-numbers only-names])
@@ -50,7 +51,7 @@
 (defn- check-file
   [state file]
   (let [lines (rh/read-lines file)]
-    (reduce (fn [m line] (assoc m line true)) {} lines)))
+    (reduce (fn [omap line] (assoc omap line true)) (fl/ordered-map) lines)))
 
 (defn run
   [state]
