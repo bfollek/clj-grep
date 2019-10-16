@@ -14,7 +14,7 @@
 
 (deftest test-load-state
   (is (= #clj_grep.core.State
-          {:files ["mike.txt"]
+          {:files ["test/data/iliad.txt"]
            :options #clj_grep.core.Options
                      {:entire-lines true
                       :ignore-case false
@@ -23,4 +23,4 @@
                       :only-names false}
            :pattern "foo\n"}
          (let [fun #'clj-grep.core/load-state]
-           (fun "foo" "-x -n" ["mike.txt"])))))
+           (fun "foo" "-x -n" ["test/data/iliad.txt"])))))

@@ -2,6 +2,7 @@
   "grep"
   (:require [clojure.string :as string]
             [clojure.tools.cli :as cli]
+            [flatland.ordered.set :as fl]
             [rabbithole.core :as rh]))
 
 (defrecord Options [entire-lines ignore-case invert line-numbers only-names])
@@ -38,8 +39,44 @@
         pattern (load-pattern pattern options)]
     (map->State {:pattern pattern :options options :files files})))
 
+(defn- calc-result
+  [line file-name options]
+  line)
+
+(defn- matches
+  [pattern line]
+  true)
+
+(defn- check-file
+  [state file]
+  (let [lines (rh/read-lines file)]
+    (reduce (fn [m line] (assoc m line true)) {} lines)))
+
+(defn run
+  [state]
+  (->>
+   (map #(check-file state %) (:files state))
+   (apply merge)
+   keys))
+
+; def _run(state: _State) -> str:
+;     results = {} # dict gives us ordered keys, no dups
+;     for file_name in state.files:
+;         with open(file_name) as f:
+;             cnt = 0
+;             # Doesn't work. (Because of the doctored File object they provide?)
+;             # for line in f:
+;             lines = f.readlines()
+;             for line in lines:
+;                 cnt += 1
+;                 match = _matches(state, line)
+;                 result = _calc_result(state, match, line, cnt, file_name)
+;                 if result:
+;                     results[result] = True
+;     return ''.join(list(results)) # list(dict) gets the keys
+
 (defn grep
   "Lightweight grep based on an exercism.io python exercise."
   [pattern flags files]
   (let [state (load-state pattern flags files)]
-    (println state)))
+    (run state)))
