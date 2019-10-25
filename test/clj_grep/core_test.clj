@@ -14,7 +14,7 @@
 
 (deftest test-load-state
   (is (= #clj_grep.core.State
-          {:files ["test/data/iliad.txt"]
+          {:file-names ["test/data/iliad.txt"]
            :options #clj_grep.core.Options
                      {:entire-lines true
                       :ignore-case false

@@ -6,7 +6,7 @@
             [rabbithole.core :as rh]))
 
 (defrecord Options [entire-lines ignore-case invert line-numbers only-names])
-(defrecord State [pattern options files])
+(defrecord State [pattern options file-names])
 
 (def ^:private cli-options
   ;; The long form becomes the keyword.
@@ -36,10 +36,10 @@
     (:ignore-case options) str/lower-case))
 
 (defn- load-state
-  [pattern flags files]
+  [pattern flags file-names]
   (let [options (load-options flags)
         pattern (load-pattern pattern options)]
-    (map->State {:pattern pattern :options options :files files})))
+    (map->State {:pattern pattern :options options :file-names file-names})))
 
 (defn- matches?
   [state line]
@@ -54,14 +54,14 @@
     (str line \newline)))
 
 (defn- check-file
-  [state file]
-  (->> (rh/read-lines file)
+  [state file-name]
+  (->> (rh/read-lines file-name)
        (filter #(matches? state %))
-       (map #(fmt-line % file (:options state)))))
+       (map #(fmt-line % file-name (:options state)))))
 
 (defn run
   [state]
-  (-> (map #(check-file state %) (:files state))
+  (-> (map #(check-file state %) (:file-names state))
       flatten
       str/join))
    ;; TODO dedup if only_names
@@ -86,6 +86,6 @@
 
 (defn grep
   "Lightweight grep based on an exercism.io python exercise."
-  [pattern flags files]
-  (-> (load-state pattern flags files)
+  [pattern flags file-names]
+  (-> (load-state pattern flags file-names)
       run))
