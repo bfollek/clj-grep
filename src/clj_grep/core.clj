@@ -34,8 +34,6 @@
   [pattern options]
   (cond-> pattern
     (:ignore-case options) str/lower-case))
-    ; Lines have trailing newlines, so add a newline to the pattern.
-    ;(:entire-lines options) (str \newline)))
 
 (defn- load-state
   [pattern flags files]
