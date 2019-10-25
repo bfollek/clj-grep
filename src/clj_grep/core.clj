@@ -56,9 +56,6 @@
 
 (defn- check-file
   [state file]
-  ;(let [lines (rh/read-lines file)]
-  ;  (map #(fmt-line % file (:options state)) (filter #(matches? state %) lines))))
-  ;(let [lines
   (->> (rh/read-lines file)
        (filter #(matches? state %))
        (map #(fmt-line % file (:options state)))))
@@ -91,5 +88,5 @@
 (defn grep
   "Lightweight grep based on an exercism.io python exercise."
   [pattern flags files]
-  (let [state (load-state pattern flags files)]
-    (run state)))
+  (-> (load-state pattern flags files)
+      run))
