@@ -61,10 +61,9 @@
 
 (defn run
   [state]
-  (let [lines (-> (map #(check-file state %) (:files state))
-                  flatten)]
-    (str/join lines)))
-
+  (-> (map #(check-file state %) (:files state))
+      flatten
+      str/join))
 
       ;#(str/join "\n" %)))
       ;(str "\n"))) ; Trailing newline
