@@ -51,7 +51,8 @@
 
 (defn- fmt-line
   [line file-name options]
-  line)
+  ; Add a newline
+  (str line "\n"))
 
 (defn- check-file
   [state file]
@@ -62,7 +63,7 @@
   [state]
   (let [lines (-> (map #(check-file state %) (:files state))
                   flatten)]
-    (str (str/join "\n" lines) "\n")))
+    (str/join lines)))
 
 
       ;#(str/join "\n" %)))
