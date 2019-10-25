@@ -39,10 +39,9 @@
   (is (= "Of that Forbidden Tree, whose mortal tast\n"
          (clj-grep.core/grep "FORBIDDEN" "-i" ["test/data/paradise-lost.txt"]))))
 
-; def test_one_file_one_match_print_file_names_flag(self):
-;         self.assertMultiLineEqual(
-;             grep("Forbidden", "-l", [PARADISELOSTFILENAME]),
-;             PARADISELOSTFILENAME + '\n')
+(deftest test-one-file-one-match-print-file-names-flag
+  (is (= "test/data/paradise-lost.txt\n"
+         (clj-grep.core/grep "Forbidden", "-l", ["test/data/paradise-lost.txt"]))))
 
 (deftest test-one-file-one-match-match-entire-lines-flag
   (is (= "With loss of Eden, till one greater Man\n"

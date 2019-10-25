@@ -49,8 +49,9 @@
 
 (defn- fmt-line
   [line file-name options]
-  ; Add a newline
-  (str line \newline))
+  (let [line (if (:only-names options) file-name line)]
+    ; Add a newline
+    (str line \newline)))
 
 (defn- check-file
   [state file]
