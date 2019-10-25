@@ -1,8 +1,7 @@
 (ns clj-grep.core
   "grep"
-  (:require [clojure.string :as string]
+  (:require [clojure.string :as str]
             [clojure.tools.cli :as cli]
-            [flatland.ordered.map :as flm]
             [flatland.ordered.set :as fls]
             [rabbithole.core :as rh]))
 
@@ -21,16 +20,20 @@
 (defn- load-options
   [flags]
   (-> flags
-      (string/split #" ")
+      (str/split #" ")
       (cli/parse-opts cli-options)
       ; Pull out the piece of the map we care about.
       :options
       map->Options))
 
+(defn- get-option
+  [state k]
+  (get-in state [:options k]))
+
 (defn- load-pattern
   [pattern options]
   (cond-> pattern
-    (:ignore-case options) string/lower-case
+    (:ignore-case options) str/lower-case
     ; Lines have trailing newlines, so add a newline to the pattern.
     (:entire-lines options) (str \newline)))
 
@@ -44,21 +47,28 @@
   [line file-name options]
   line)
 
-(defn- matches
-  [pattern line]
-  true)
+(defn- matches?
+  [state line]
+  (let [line (if (get-option state :ignore-case) (str/lower-case line) line)
+        match? (str/includes? line (:pattern state))]
+    (if (get-option state :invert) (not match?) match?)))
 
 (defn- check-file
   [state file]
   (let [lines (rh/read-lines file)]
-    (reduce (fn [omap line] (assoc omap line true)) (fl/ordered-map) lines)))
+    (filter #(matches? state %) lines)))
 
 (defn run
   [state]
-  (->>
-   (map #(check-file state %) (:files state))
-   (apply merge)
-   keys))
+  (let [results (-> (map #(check-file state %) (:files state))
+                    flatten)]
+                    ; Put newlines back in
+                    ;(interleave (repeat "\n")))]
+    (-> (str/join "\n" results)
+        (str "\n")))) ; Trailing newline
+   ;; TODO dedup if only_names
+   ;; (into fls/ordered-set)))) ; Get rid of dups
+   ;; TODO break out of seqs
 
 ; def _run(state: _State) -> str:
 ;     results = {} # dict gives us ordered keys, no dups

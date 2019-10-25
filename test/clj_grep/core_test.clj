@@ -24,3 +24,17 @@
            :pattern "foo\n"}
          (let [fun #'clj-grep.core/load-state]
            (fun "foo" "-x -n" ["test/data/iliad.txt"])))))
+
+(deftest test-one-file-one-match-no-flags
+  (is (= "Of Atreus, Agamemnon, King of men.\n"
+         (clj-grep.core/grep "Agamemnon", "", ["test/data/iliad.txt"]))))
+
+; def test_one_file_one_match_print_line_numbers_flag(self):
+;         self.assertMultiLineEqual(
+;             grep("Forbidden", "-n", [PARADISELOSTFILENAME]),
+;             "2:Of that Forbidden Tree, whose mortal tast\n"
+;         )
+
+(deftest test-one-file-one-match-case_insensitive_flag
+  (is (= "Of that Forbidden Tree, whose mortal tast\n"
+         (clj-grep.core/grep "FORBIDDEN", "-i", ["test/data/paradise-lost.txt"]))))
