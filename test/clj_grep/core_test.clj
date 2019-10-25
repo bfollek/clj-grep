@@ -21,13 +21,13 @@
                       :invert false
                       :line-numbers true
                       :only-names false}
-           :pattern "foo\n"}
+           :pattern "foo"}
          (let [fun #'clj-grep.core/load-state]
            (fun "foo" "-x -n" ["test/data/iliad.txt"])))))
 
 (deftest test-one-file-one-match-no-flags
   (is (= "Of Atreus, Agamemnon, King of men.\n"
-         (clj-grep.core/grep "Agamemnon", "", ["test/data/iliad.txt"]))))
+         (clj-grep.core/grep "Agamemnon" "" ["test/data/iliad.txt"]))))
 
 ; def test_one_file_one_match_print_line_numbers_flag(self):
 ;         self.assertMultiLineEqual(
@@ -37,4 +37,13 @@
 
 (deftest test-one-file-one-match-case_insensitive_flag
   (is (= "Of that Forbidden Tree, whose mortal tast\n"
-         (clj-grep.core/grep "FORBIDDEN", "-i", ["test/data/paradise-lost.txt"]))))
+         (clj-grep.core/grep "FORBIDDEN" "-i" ["test/data/paradise-lost.txt"]))))
+
+; def test_one_file_one_match_print_file_names_flag(self):
+;         self.assertMultiLineEqual(
+;             grep("Forbidden", "-l", [PARADISELOSTFILENAME]),
+;             PARADISELOSTFILENAME + '\n')
+
+(deftest test-one-file-one-match-match-entire-lines-flag
+  (is (= "With loss of Eden, till one greater Man\n"
+         (clj-grep.core/grep "With loss of Eden, till one greater Man" "-x" ["test/data/paradise-lost.txt"]))))

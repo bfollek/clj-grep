@@ -33,9 +33,9 @@
 (defn- load-pattern
   [pattern options]
   (cond-> pattern
-    (:ignore-case options) str/lower-case
+    (:ignore-case options) str/lower-case))
     ; Lines have trailing newlines, so add a newline to the pattern.
-    (:entire-lines options) (str \newline)))
+    ;(:entire-lines options) (str \newline)))
 
 (defn- load-state
   [pattern flags files]
@@ -52,7 +52,7 @@
 (defn- fmt-line
   [line file-name options]
   ; Add a newline
-  (str line "\n"))
+  (str line \newline))
 
 (defn- check-file
   [state file]
