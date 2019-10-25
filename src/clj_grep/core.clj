@@ -56,18 +56,18 @@
 
 (defn- check-file
   [state file]
-  (let [lines (rh/read-lines file)]
-    (map #(fmt-line % file (:options state)) (filter #(matches? state %) lines))))
+  ;(let [lines (rh/read-lines file)]
+  ;  (map #(fmt-line % file (:options state)) (filter #(matches? state %) lines))))
+  ;(let [lines
+  (->> (rh/read-lines file)
+       (filter #(matches? state %))
+       (map #(fmt-line % file (:options state)))))
 
 (defn run
   [state]
   (-> (map #(check-file state %) (:files state))
       flatten
       str/join))
-
-      ;#(str/join "\n" %)))
-      ;(str "\n"))) ; Trailing newline
-   ;; TODO Handle newlines with each line, upstairs, when I (format-line)
    ;; TODO dedup if only_names
    ;; (into fls/ordered-set)))) ; Get rid of dups
    ;; TODO break out of seqs
