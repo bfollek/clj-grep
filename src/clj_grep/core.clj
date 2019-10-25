@@ -43,7 +43,7 @@
 
 (defn- matches?
   [state line]
-  (let [line (cond-> line (get-option state :ignore-case) (str/lower-case))
+  (let [line (cond-> line (get-option state :ignore-case) str/lower-case)
         match? (str/includes? line (:pattern state))]
     (cond-> match? (get-option state :invert) not)))
 
