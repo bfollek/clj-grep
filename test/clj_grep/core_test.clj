@@ -60,10 +60,8 @@
   (is (= "test/data/same-line-repeats.txt\n"
          (clj-grep.core/grep "linerep" "-l" ["test/data/same-line-repeats.txt"]))))
 
-;     def test_one_file_same_line_repeats_no_flags(self):
-;         self.assertMultiLineEqual(
-;             grep("linerep", "", [SAMELINEREPEATSFILENAME]),
-;             "samelinerepeats\n"
-;             "samelinerepeats\n"
-;             "samelinerepeats\n"
-;         )
+(deftest test-one-file-same-line-repeats-no-flags
+  (is (= (str "samelinerepeats\n"
+              "samelinerepeats\n"
+              "samelinerepeats\n")
+         (clj-grep.core/grep "linerep" "" ["test/data/same-line-repeats.txt"]))))
