@@ -2,6 +2,11 @@
   (:require [clojure.test :refer :all]
             [clj-grep.core]))
 
+(def original-file-names
+  ["iliad.txt" "midsummer-night.txt" "paradise-lost.txt"])
+(def file-names
+  (conj original-file-names "same-line-repeats.txt"))
+
 (deftest test-load-options
   (is (=  #clj_grep.core.Options
            {:entire-lines false
@@ -46,3 +51,19 @@
 (deftest test-one-file-one-match-match-entire-lines-flag
   (is (= "With loss of Eden, till one greater Man\n"
          (clj-grep.core/grep "With loss of Eden, till one greater Man" "-x" ["test/data/paradise-lost.txt"]))))
+
+
+
+;;;; LAST 2 TESTS
+
+(deftest test-one-file-same-line-repeats-print-file_names-flag
+  (is (= "test/data/same-line-repeats.txt\n"
+         (clj-grep.core/grep "linerep" "-l" ["test/data/same-line-repeats.txt"]))))
+
+;     def test_one_file_same_line_repeats_no_flags(self):
+;         self.assertMultiLineEqual(
+;             grep("linerep", "", [SAMELINEREPEATSFILENAME]),
+;             "samelinerepeats\n"
+;             "samelinerepeats\n"
+;             "samelinerepeats\n"
+;         )

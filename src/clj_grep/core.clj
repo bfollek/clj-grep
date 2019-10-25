@@ -2,15 +2,14 @@
   "grep"
   (:require [clojure.string :as str]
             [clojure.tools.cli :as cli]
-            [flatland.ordered.set :as fls]
             [rabbithole.core :as rh]))
 
 (defrecord Options [entire-lines ignore-case invert line-numbers only-names])
 (defrecord State [pattern options file-names])
 
 (def ^:private cli-options
-  ;; The long form becomes the keyword.
-  ;; :default false is necessary to set missing options.
+  ; The long form becomes the keyword.
+  ; :default false is necessary to set missing options.
   [["-x" "--entire-lines" :default false]
    ["-i" "--ignore-case" :default false]
    ["-v" "--invert" :default false]
@@ -22,7 +21,7 @@
   (-> flags
       (str/split #" ")
       (cli/parse-opts cli-options)
-      ; Pull out the piece of the map we care about.
+      ;; Pull out the piece of the map we care about.
       :options
       map->Options))
 
@@ -63,10 +62,9 @@
   [state]
   (-> (map #(check-file state %) (:file-names state))
       flatten
+      ; If only file names, remove duplicates.
+      (cond-> (get-option state :only-names) distinct)
       str/join))
-   ;; TODO dedup if only_names
-   ;; (into fls/ordered-set)))) ; Get rid of dups
-   ;; TODO break out of seqs
 
 ; def _run(state: _State) -> str:
 ;     results = {} # dict gives us ordered keys, no dups
