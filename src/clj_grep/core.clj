@@ -43,10 +43,9 @@
 
 (defn- matches?
   [state line]
-  ;(let [line (if (get-option state :ignore-case) (str/lower-case line) line)
   (let [line (cond-> line (get-option state :ignore-case) (str/lower-case))
         match? (str/includes? line (:pattern state))]
-    (if (get-option state :invert) (not match?) match?)))
+    (cond-> match? (get-option state :invert) not)))
 
 (defn- fmt-line
   [line file-name options]
