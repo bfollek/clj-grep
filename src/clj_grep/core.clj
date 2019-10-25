@@ -43,29 +43,31 @@
         pattern (load-pattern pattern options)]
     (map->State {:pattern pattern :options options :files files})))
 
-(defn- calc-result
-  [line file-name options]
-  line)
-
 (defn- matches?
   [state line]
   (let [line (if (get-option state :ignore-case) (str/lower-case line) line)
         match? (str/includes? line (:pattern state))]
     (if (get-option state :invert) (not match?) match?)))
 
+(defn- fmt-line
+  [line file-name options]
+  line)
+
 (defn- check-file
   [state file]
   (let [lines (rh/read-lines file)]
-    (filter #(matches? state %) lines)))
+    (map #(fmt-line % file (:options state)) (filter #(matches? state %) lines))))
 
 (defn run
   [state]
-  (let [results (-> (map #(check-file state %) (:files state))
-                    flatten)]
-                    ; Put newlines back in
-                    ;(interleave (repeat "\n")))]
-    (-> (str/join "\n" results)
-        (str "\n")))) ; Trailing newline
+  (let [lines (-> (map #(check-file state %) (:files state))
+                  flatten)]
+    (str (str/join "\n" lines) "\n")))
+
+
+      ;#(str/join "\n" %)))
+      ;(str "\n"))) ; Trailing newline
+   ;; TODO Handle newlines with each line, upstairs, when I (format-line)
    ;; TODO dedup if only_names
    ;; (into fls/ordered-set)))) ; Get rid of dups
    ;; TODO break out of seqs
