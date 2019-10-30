@@ -2,10 +2,14 @@
   (:require [clojure.test :refer :all]
             [clj-grep.core]))
 
+(def iliad "test/data/iliad.txt")
+(def midsummer "test/data/midsummer-night.txt")
+(def paradise "test/data/paradise-lost.txt")
+(def same-line "test/data/same-line-repeats.txt")
 (def original-file-names
-  ["iliad.txt" "midsummer-night.txt" "paradise-lost.txt"])
+  [iliad midsummer paradise])
 (def file-names
-  (conj original-file-names "same-line-repeats.txt"))
+  (conj original-file-names same-line))
 
 (deftest test-load-options
   (is (=  #clj_grep.core.Options
@@ -28,11 +32,11 @@
                       :only-names false}
            :pattern "foo"}
          (let [fun #'clj-grep.core/load-state]
-           (fun "foo" "-x -n" ["test/data/iliad.txt"])))))
+           (fun "foo" "-x -n" [iliad])))))
 
 (deftest test-one-file-one-match-no-flags
   (is (= "Of Atreus, Agamemnon, King of men.\n"
-         (clj-grep.core/grep "Agamemnon" "" ["test/data/iliad.txt"]))))
+         (clj-grep.core/grep "Agamemnon" "" [iliad]))))
 
 ; def test_one_file_one_match_print_line_numbers_flag(self):
 ;         self.assertMultiLineEqual(
@@ -42,15 +46,15 @@
 
 (deftest test-one-file-one-match-case_insensitive_flag
   (is (= "Of that Forbidden Tree, whose mortal tast\n"
-         (clj-grep.core/grep "FORBIDDEN" "-i" ["test/data/paradise-lost.txt"]))))
+         (clj-grep.core/grep "FORBIDDEN" "-i" [paradise]))))
 
 (deftest test-one-file-one-match-print-file-names-flag
   (is (= "test/data/paradise-lost.txt\n"
-         (clj-grep.core/grep "Forbidden", "-l", ["test/data/paradise-lost.txt"]))))
+         (clj-grep.core/grep "Forbidden", "-l", [paradise]))))
 
 (deftest test-one-file-one-match-match-entire-lines-flag
   (is (= "With loss of Eden, till one greater Man\n"
-         (clj-grep.core/grep "With loss of Eden, till one greater Man" "-x" ["test/data/paradise-lost.txt"]))))
+         (clj-grep.core/grep "With loss of Eden, till one greater Man" "-x" [paradise]))))
 
 ;  def test_one_file_one_match_multiple_flags(self):
 ;         self.assertMultiLineEqual(
@@ -62,7 +66,7 @@
   (is (= (str "Nor how it may concern my modesty,\n"
               "But I beseech your grace that I may know\n"
               "The worst that may befall me in this case,\n")
-         (clj-grep.core/grep "may" "" ["test/data/midsummer-night.txt"]))))
+         (clj-grep.core/grep "may" "" [midsummer]))))
 
     ; def test_one_file_several_matches_print_line_numbers_flag(self):
     ;     self.assertMultiLineEqual(
@@ -73,12 +77,12 @@
 
 (deftest test-one-file-several-matches-match-entire-lines-flag
   (is (= ""
-         (clj-grep.core/grep "may" "-x" ["test/data/midsummer-night.txt"]))))
+         (clj-grep.core/grep "may" "-x" [midsummer]))))
 
 (deftest test-one-file-several-matches-case-insensitive-flag
   (is (= (str  "Achilles sing, O Goddess! Peleus' son;\n"
                "The noble Chief Achilles from the son\n")
-         (clj-grep.core/grep "ACHILLES" "-i", ["test/data/iliad.txt"]))))
+         (clj-grep.core/grep "ACHILLES" "-i", [iliad]))))
 
     ; def test_one_file_several_matches_inverted_flag(self):
     ;     self.assertMultiLineEqual(
@@ -98,10 +102,10 @@
 
 (deftest test-one-file-same-line-repeats-print-file_names-flag
   (is (= "test/data/same-line-repeats.txt\n"
-         (clj-grep.core/grep "linerep" "-l" ["test/data/same-line-repeats.txt"]))))
+         (clj-grep.core/grep "linerep" "-l" [same-line]))))
 
 (deftest test-one-file-same-line-repeats-no-flags
   (is (= (str "samelinerepeats\n"
               "samelinerepeats\n"
               "samelinerepeats\n")
-         (clj-grep.core/grep "linerep" "" ["test/data/same-line-repeats.txt"]))))
+         (clj-grep.core/grep "linerep" "" [same-line]))))
