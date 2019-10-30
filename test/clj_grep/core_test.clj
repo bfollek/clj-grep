@@ -84,19 +84,17 @@
                "The noble Chief Achilles from the son\n")
          (clj-grep.core/grep "ACHILLES" "-i", [iliad]))))
 
-    ; def test_one_file_several_matches_inverted_flag(self):
-    ;     self.assertMultiLineEqual(
-    ;         grep("Of", "-v", [PARADISELOSTFILENAME]),
-    ;         "Brought Death into the World, and all our woe,\n"
-    ;         "With loss of Eden, till one greater Man\n"
-    ;         "Restore us, and regain the blissful Seat,\n"
-    ;         "Sing Heav'nly Muse, that on the secret top\n"
-    ;         "That Shepherd, who first taught the chosen Seed\n")
+(deftest test-one-file-several-matches-inverted-flag
+  (is (= (str  "Brought Death into the World, and all our woe,\n"
+               "With loss of Eden, till one greater Man\n"
+               "Restore us, and regain the blissful Seat,\n"
+               "Sing Heav'nly Muse, that on the secret top\n"
+               "That Shepherd, who first taught the chosen Seed\n")
+         (clj-grep.core/grep "Of" "-v", [paradise]))))
 
-    ; def test_one_file_one_match_file_flag_takes_precedence_over_line(self):
-    ;     self.assertMultiLineEqual(
-    ;         grep("ten",  "-n -l", [ILIADFILENAME]),
-    ;         ILIADFILENAME + '\n')
+(deftest test-one-file-one-match-file-flag-takes-precedence-over-line
+  (is (= (str iliad "\n")
+         (clj-grep.core/grep "ten" "-n -l", [iliad]))))
 
 ;;;; LAST 2 TESTS
 
