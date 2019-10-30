@@ -52,7 +52,48 @@
   (is (= "With loss of Eden, till one greater Man\n"
          (clj-grep.core/grep "With loss of Eden, till one greater Man" "-x" ["test/data/paradise-lost.txt"]))))
 
+;  def test_one_file_one_match_multiple_flags(self):
+;         self.assertMultiLineEqual(
+;             grep("OF ATREUS, Agamemnon, KIng of MEN.",
+;                  "-n -i -x", [ILIADFILENAME]),
+;             "9:Of Atreus, Agamemnon, King of men.\n")
 
+(deftest test-one-file-several-matches-no-flags
+  (is (= (str "Nor how it may concern my modesty,\n"
+              "But I beseech your grace that I may know\n"
+              "The worst that may befall me in this case,\n")
+         (clj-grep.core/grep "may" "" ["test/data/midsummer-night.txt"]))))
+
+    ; def test_one_file_several_matches_print_line_numbers_flag(self):
+    ;     self.assertMultiLineEqual(
+    ;         grep("may", "-n", [MIDSUMMERNIGHTFILENAME]),
+    ;         "3:Nor how it may concern my modesty,\n"
+    ;         "5:But I beseech your grace that I may know\n"
+    ;         "6:The worst that may befall me in this case,\n")
+
+(deftest test-one-file-several-matches-match-entire-lines-flag
+  (is (= ""
+         (clj-grep.core/grep "may" "-x" ["test/data/midsummer-night.txt"]))))
+
+    ; def test_one_file_several_matches_case_insensitive_flag(self):
+    ;     self.assertMultiLineEqual(
+    ;         grep("ACHILLES", "-i", [ILIADFILENAME]),
+    ;         "Achilles sing, O Goddess! Peleus' son;\n"
+    ;         "The noble Chief Achilles from the son\n")
+
+    ; def test_one_file_several_matches_inverted_flag(self):
+    ;     self.assertMultiLineEqual(
+    ;         grep("Of", "-v", [PARADISELOSTFILENAME]),
+    ;         "Brought Death into the World, and all our woe,\n"
+    ;         "With loss of Eden, till one greater Man\n"
+    ;         "Restore us, and regain the blissful Seat,\n"
+    ;         "Sing Heav'nly Muse, that on the secret top\n"
+    ;         "That Shepherd, who first taught the chosen Seed\n")
+
+    ; def test_one_file_one_match_file_flag_takes_precedence_over_line(self):
+    ;     self.assertMultiLineEqual(
+    ;         grep("ten",  "-n -l", [ILIADFILENAME]),
+    ;         ILIADFILENAME + '\n')
 
 ;;;; LAST 2 TESTS
 
