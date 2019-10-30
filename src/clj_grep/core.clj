@@ -48,10 +48,9 @@
 
 (defn- fmt-line
   [line file-name options]
-  (if (:only-names options) file-name line))
-  ;(let [line (if (:only-names options) file-name line)]))
-    ; Add a newline
-    ;(str line \newline)))
+  (cond
+    (:only-names options) file-name
+    :else line))
 
 (defn- check-file
   [state file-name]
