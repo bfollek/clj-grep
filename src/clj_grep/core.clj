@@ -48,9 +48,10 @@
 
 (defn- fmt-line
   [line file-name options]
-  (let [line (if (:only-names options) file-name line)]
+  (if (:only-names options) file-name line))
+  ;(let [line (if (:only-names options) file-name line)]))
     ; Add a newline
-    (str line \newline)))
+    ;(str line \newline)))
 
 (defn- check-file
   [state file-name]
@@ -64,6 +65,9 @@
       flatten
       ; If only file names, remove duplicates.
       (cond-> (get-option state :only-names) distinct)
+      ; Add a newlines
+      (interleave (repeat "\n"))
+      ; Return one big string
       str/join))
 
 ; def _run(state: _State) -> str:
