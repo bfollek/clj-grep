@@ -75,11 +75,10 @@
   (is (= ""
          (clj-grep.core/grep "may" "-x" ["test/data/midsummer-night.txt"]))))
 
-    ; def test_one_file_several_matches_case_insensitive_flag(self):
-    ;     self.assertMultiLineEqual(
-    ;         grep("ACHILLES", "-i", [ILIADFILENAME]),
-    ;         "Achilles sing, O Goddess! Peleus' son;\n"
-    ;         "The noble Chief Achilles from the son\n")
+(deftest test-one-file-several-matches-case-insensitive-flag
+  (is (= (str  "Achilles sing, O Goddess! Peleus' son;\n"
+               "The noble Chief Achilles from the son\n")
+         (clj-grep.core/grep "ACHILLES" "-i", ["test/data/iliad.txt"]))))
 
     ; def test_one_file_several_matches_inverted_flag(self):
     ;     self.assertMultiLineEqual(
