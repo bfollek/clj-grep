@@ -99,17 +99,15 @@
 (deftest test-one-file-no-matches-various-flags
   (is (= "" (clj-grep.core/grep "Gandalf" "-n -l -x -i" [iliad]))))
 
-    ; def test_multiple_files_one_match_no_flags(self):
-    ;     self.assertMultiLineEqual(
-    ;         grep("Agamemnon", "", ORIGINAL_FILENAMES),
-    ;         "iliad.txt:Of Atreus, Agamemnon, King of men.\n")
+(deftest test-multiple-files-one-match-no-flags
+  (is (= "iliad.txt:Of Atreus, Agamemnon, King of men.\n"
+         (clj-grep.core/grep "Agamemnon" "" original-file-names))))
 
-    ; def test_multiple_files_several_matches_no_flags(self):
-    ;     self.assertMultiLineEqual(
-    ;         grep("may", "", ORIGINAL_FILENAMES),
-    ;         "midsummer-night.txt:Nor how it may concern my modesty,\n"
-    ;         "midsummer-night.txt:But I beseech your grace that I may know\n"
-    ;         "midsummer-night.txt:The worst that may befall me in this case,\n")
+(deftest test-multiple-files-several-matches-no-flags
+  (is (= (str  "midsummer-night.txt:Nor how it may concern my modesty,\n"
+               "midsummer-night.txt:But I beseech your grace that I may know\n"
+               "midsummer-night.txt:The worst that may befall me in this case,\n")
+         (clj-grep.core/grep "may" "" original-file-names))))
 
     ; def test_multiple_files_several_matches_print_line_numbers_flag(self):
     ;     expected = (
