@@ -2,10 +2,10 @@
   (:require [clojure.test :refer :all]
             [clj-grep.core]))
 
-(def iliad "test/data/iliad.txt")
-(def midsummer "test/data/midsummer-night.txt")
-(def paradise "test/data/paradise-lost.txt")
-(def same-line "test/data/same-line-repeats.txt")
+(def iliad "iliad.txt")
+(def midsummer "midsummer-night.txt")
+(def paradise "paradise-lost.txt")
+(def same-line "same-line-repeats.txt")
 (def original-file-names
   [iliad midsummer paradise])
 (def file-names
@@ -23,7 +23,7 @@
 
 (deftest test-load-state
   (is (= #clj_grep.core.State
-          {:file-names ["test/data/iliad.txt"]
+          {:file-names ["iliad.txt"]
            :options #clj_grep.core.Options
                      {:entire-lines true
                       :ignore-case false
@@ -49,7 +49,7 @@
          (clj-grep.core/grep "FORBIDDEN" "-i" [paradise]))))
 
 (deftest test-one-file-one-match-print-file-names-flag
-  (is (= "test/data/paradise-lost.txt\n"
+  (is (= "paradise-lost.txt\n"
          (clj-grep.core/grep "Forbidden" "-l" [paradise]))))
 
 (deftest test-one-file-one-match-match-entire-lines-flag
@@ -138,13 +138,11 @@
     ;         "paradise-lost.txt:Sing Heav'nly Muse, that on the secret top\n")
     ;     self.assertMultiLineEqual(grep("TO", "-i", ORIGINAL_FILENAMES), expected)
 
-    ; def test_multiple_files_several_matches_inverted_flag(self):
-    ;     self.assertMultiLineEqual(
-    ;         grep("a", "-v", ORIGINAL_FILENAMES),
-    ;         "iliad.txt:Achilles sing, O Goddess! Peleus' son;\n"
-    ;         "iliad.txt:The noble Chief Achilles from the son\n"
-    ;         "midsummer-night.txt:If I refuse to wed Demetrius.\n"
-    ;     )
+(deftest test-multiple-files-several-matches-inverted-flag
+  (is (= (str "iliad.txt:Achilles sing, O Goddess! Peleus' son;\n"
+              "iliad.txt:The noble Chief Achilles from the son\n"
+              "midsummer-night.txt:If I refuse to wed Demetrius.\n")
+         (clj-grep.core/grep "a" "-v" original-file-names))))
 
     ; def test_multiple_files_one_match_match_entire_lines_flag(self):
     ;     self.assertMultiLineEqual(
@@ -168,40 +166,36 @@
     ;         grep("who", "-n -l", ORIGINAL_FILENAMES),
     ;         ILIADFILENAME + '\n' + PARADISELOSTFILENAME + '\n')
 
-    ; def test_multiple_files_several_matches_inverted_match_entire_lines(self):
-    ;     expected = (
-    ;         "iliad.txt:Achilles sing, O Goddess! Peleus' son;\n"
-    ;         "iliad.txt:His wrath pernicious, who ten thousand woes\n"
-    ;         "iliad.txt:Caused to Achaia's host, sent many a soul\n"
-    ;         "iliad.txt:And Heroes gave (so stood the will of Jove)\n"
-    ;         "iliad.txt:To dogs and to all ravening fowls a prey,\n"
-    ;         "iliad.txt:When fierce dispute had separated once\n"
-    ;         "iliad.txt:The noble Chief Achilles from the son\n"
-    ;         "iliad.txt:Of Atreus, Agamemnon, King of men.\n"
-    ;         "midsummer-night.txt:I do entreat your grace to pardon me.\n"
-    ;         "midsummer-night.txt:I know not by what power I am made bold,\n"
-    ;         "midsummer-night.txt:Nor how it may concern my modesty,\n"
-    ;         "midsummer-night.txt:In such a presence here to plead my thoughts;"
-    ;         "\nmidsummer-night.txt:But I beseech your grace that I may know\n"
-    ;         "midsummer-night.txt:The worst that may befall me in this case,\n"
-    ;         "midsummer-night.txt:If I refuse to wed Demetrius.\n"
-    ;         "paradise-lost.txt:Of Mans First Disobedience, and the Fruit\n"
-    ;         "paradise-lost.txt:Of that Forbidden Tree, whose mortal tast\n"
-    ;         "paradise-lost.txt:Brought Death into the World, and all our woe,"
-    ;         "\nparadise-lost.txt:With loss of Eden, till one greater Man\n"
-    ;         "paradise-lost.txt:Restore us, and regain the blissful Seat,\n"
-    ;         "paradise-lost.txt:Sing Heav'nly Muse, that on the secret top\n"
-    ;         "paradise-lost.txt:Of Oreb, or of Sinai, didst inspire\n"
-    ;         "paradise-lost.txt:That Shepherd, who first taught the chosen Seed"
-    ;         "\n"
-    ;     )
-    ;     self.assertMultiLineEqual(
-    ;         grep("Illustrious into Ades premature,", "-x -v", ORIGINAL_FILENAMES),
-    ;         expected
-    ;     )
+(deftest test-multiple-files-several-matches-inverted-match-entire-lines
+  (is (= (str "iliad.txt:Achilles sing, O Goddess! Peleus' son;\n"
+              "iliad.txt:His wrath pernicious, who ten thousand woes\n"
+              "iliad.txt:Caused to Achaia's host, sent many a soul\n"
+              "iliad.txt:And Heroes gave (so stood the will of Jove)\n"
+              "iliad.txt:To dogs and to all ravening fowls a prey,\n"
+              "iliad.txt:When fierce dispute had separated once\n"
+              "iliad.txt:The noble Chief Achilles from the son\n"
+              "iliad.txt:Of Atreus, Agamemnon, King of men.\n"
+              "midsummer-night.txt:I do entreat your grace to pardon me.\n"
+              "midsummer-night.txt:I know not by what power I am made bold,\n"
+              "midsummer-night.txt:Nor how it may concern my modesty,\n"
+              "midsummer-night.txt:In such a presence here to plead my thoughts;"
+              "\nmidsummer-night.txt:But I beseech your grace that I may know\n"
+              "midsummer-night.txt:The worst that may befall me in this case,\n"
+              "midsummer-night.txt:If I refuse to wed Demetrius.\n"
+              "paradise-lost.txt:Of Mans First Disobedience, and the Fruit\n"
+              "paradise-lost.txt:Of that Forbidden Tree, whose mortal tast\n"
+              "paradise-lost.txt:Brought Death into the World, and all our woe,"
+              "\nparadise-lost.txt:With loss of Eden, till one greater Man\n"
+              "paradise-lost.txt:Restore us, and regain the blissful Seat,\n"
+              "paradise-lost.txt:Sing Heav'nly Muse, that on the secret top\n"
+              "paradise-lost.txt:Of Oreb, or of Sinai, didst inspire\n"
+              "paradise-lost.txt:That Shepherd, who first taught the chosen Seed"
+              "\n")
+         (clj-grep.core/grep "Illustrious into Ades premature," "-x -v"
+                             original-file-names))))
 
 (deftest test-one-file-same-line-repeats-print-file_names-flag
-  (is (= "test/data/same-line-repeats.txt\n"
+  (is (= "same-line-repeats.txt\n"
          (clj-grep.core/grep "linerep" "-l" [same-line]))))
 
 (deftest test-one-file-same-line-repeats-no-flags

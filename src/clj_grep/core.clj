@@ -48,16 +48,22 @@
     (cond-> match? (get-option state :invert) not)))
 
 (defn- fmt-line
-  [line file-name options]
-  (cond
-    (:only-names options) file-name
-    :else line))
+  [line file-name state]
+  (let [options (:options state)]
+    (cond
+      (:only-names options) file-name
+      (> (count (:file-names state)) 1) (format "%s:%s" file-name line)
+      :else line)))
+
+(defn- fix-path
+  [file-name]
+  (str "test/data/" file-name))
 
 (defn- check-file
   [state file-name]
-  (->> (rh/read-lines file-name)
+  (->> (rh/read-lines (fix-path file-name))
        (filter #(matches? state %))
-       (map #(fmt-line % file-name (:options state)))))
+       (map #(fmt-line % file-name state))))
 
 (defn run
   [state]
@@ -69,22 +75,6 @@
       (interleave (repeat "\n"))
       ; Return one big string
       str/join))
-
-; def _run(state: _State) -> str:
-;     results = {} # dict gives us ordered keys, no dups
-;     for file_name in state.files:
-;         with open(file_name) as f:
-;             cnt = 0
-;             # Doesn't work. (Because of the doctored File object they provide?)
-;             # for line in f:
-;             lines = f.readlines()
-;             for line in lines:
-;                 cnt += 1
-;                 match = _matches(state, line)
-;                 result = _calc_result(state, match, line, cnt, file_name)
-;                 if result:
-;                     results[result] = True
-;     return ''.join(list(results)) # list(dict) gets the keys
 
 (defn grep
   "Lightweight grep based on an exercism.io python exercise."
