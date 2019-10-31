@@ -117,24 +117,23 @@
     ;         "paradise-lost.txt:6:Sing Heav'nly Muse, that on the secret top\n")
     ;     self.assertMultiLineEqual(grep("that", "-n", ORIGINAL_FILENAMES), expected)
 
-    ; def test_multiple_files_one_match_print_file_names_flag(self):
-    ;     self.assertMultiLineEqual(
-    ;         grep("who", "-l", ORIGINAL_FILENAMES),
-    ;         ILIADFILENAME + '\n' + PARADISELOSTFILENAME + '\n')
+(deftest test-multiple-files-one-match-print-file-names-flag
+  (is (= (str iliad "\n" paradise "\n")
+         (clj-grep.core/grep "who" "-l" original-file-names))))
 
-    ; def test_multiple_files_several_matches_case_insensitive_flag(self):
-    ;     expected = (
-    ;         "iliad.txt:Caused to Achaia's host, sent many a soul\n"
-    ;         "iliad.txt:Illustrious into Ades premature,\n"
-    ;         "iliad.txt:And Heroes gave (so stood the will of Jove)\n"
-    ;         "iliad.txt:To dogs and to all ravening fowls a prey,\n"
-    ;         "midsummer-night.txt:I do entreat your grace to pardon me.\n"
-    ;         "midsummer-night.txt:In such a presence here to plead my thoughts;"
-    ;         "\nmidsummer-night.txt:If I refuse to wed Demetrius.\n"
-    ;         "paradise-lost.txt:Brought Death into the World, and all our woe,"
-    ;         "\nparadise-lost.txt:Restore us, and regain the blissful Seat,\n"
-    ;         "paradise-lost.txt:Sing Heav'nly Muse, that on the secret top\n")
-    ;     self.assertMultiLineEqual(grep("TO", "-i", ORIGINAL_FILENAMES), expected)
+(deftest test-multiple-files-several-matches-case-insensitive-flag
+  (is (= (str
+          "iliad.txt:Caused to Achaia's host, sent many a soul\n"
+          "iliad.txt:Illustrious into Ades premature,\n"
+          "iliad.txt:And Heroes gave (so stood the will of Jove)\n"
+          "iliad.txt:To dogs and to all ravening fowls a prey,\n"
+          "midsummer-night.txt:I do entreat your grace to pardon me.\n"
+          "midsummer-night.txt:In such a presence here to plead my thoughts;"
+          "\nmidsummer-night.txt:If I refuse to wed Demetrius.\n"
+          "paradise-lost.txt:Brought Death into the World, and all our woe,"
+          "\nparadise-lost.txt:Restore us, and regain the blissful Seat,\n"
+          "paradise-lost.txt:Sing Heav'nly Muse, that on the secret top\n")
+         (clj-grep.core/grep "TO" "-i" original-file-names))))
 
 (deftest test-multiple-files-several-matches-inverted-flag
   (is (= (str "iliad.txt:Achilles sing, O Goddess! Peleus' son;\n"
