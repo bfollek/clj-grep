@@ -59,10 +59,12 @@
   [line file-name state]
   (let [txt (second line)
         options (:options state)]
-    (cond
-      (:only-names options) file-name
-      (> (count (:file-names state)) 1) (format "%s:%s" file-name txt)
-      :else txt)))
+    (if
+     (:only-names options)
+      file-name
+      (cond->> txt
+        (:line-numbers options) (format "%d:%s" (first line))
+        (> (count (:file-names state)) 1) (format "%s:%s" file-name)))))
 
 (defn- fix-path
   [file-name]
