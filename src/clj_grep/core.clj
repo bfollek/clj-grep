@@ -71,10 +71,11 @@
 (defn- check-file
   [state file-name]
   (with-open [rdr (io/reader (fix-path file-name))]
-    (doall (->> (line-seq rdr)
-                number-lines
-                (filter #(matches? state %))
-                (map #(fmt-line % file-name state))))))
+    (->> (line-seq rdr)
+         number-lines
+         (filter #(matches? state %))
+         (map #(fmt-line % file-name state))
+         doall)))
 
 (defn- run
   [state]
