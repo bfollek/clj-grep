@@ -38,11 +38,9 @@
   (is (= "Of Atreus, Agamemnon, King of men.\n"
          (clj-grep.core/grep "Agamemnon" "" [iliad]))))
 
-; def test-one-file-one-match-print-line-numbers-flag(self):
-;         self.assertMultiLineEqual(
-;             grep("Forbidden", "-n", [PARADISELOSTFILENAME]),
-;             "2:Of that Forbidden Tree, whose mortal tast\n"
-;         )
+(deftest test-one-file-one-match-print-line-numbers-flag
+  (is (= "2:Of that Forbidden Tree, whose mortal tast\n"
+         (clj-grep.core/grep "Forbidden" "-n" [paradise]))))
 
 (deftest test-one-file-one-match-case-insensitive-flag
   (is (= "Of that Forbidden Tree, whose mortal tast\n"
@@ -56,11 +54,9 @@
   (is (= "With loss of Eden, till one greater Man\n"
          (clj-grep.core/grep "With loss of Eden, till one greater Man" "-x" [paradise]))))
 
-;  def test-one-file-one-match-multiple-flags(self):
-;         self.assertMultiLineEqual(
-;             grep("OF ATREUS, Agamemnon, KIng of MEN.",
-;                  "-n -i -x", [ILIADFILENAME]),
-;             "9:Of Atreus, Agamemnon, King of men.\n")
+(deftest test-one-file-one-match-multiple-flags
+  (is (= "9:Of Atreus, Agamemnon, King of men.\n"
+         (clj-grep.core/grep "OF ATREUS, Agamemnon, KIng of MEN." "-n -i -x" [iliad]))))
 
 (deftest test-one-file-several-matches-no-flags
   (is (= (str "Nor how it may concern my modesty,\n"
@@ -68,12 +64,11 @@
               "The worst that may befall me in this case,\n")
          (clj-grep.core/grep "may" "" [midsummer]))))
 
-    ; def test-one-file-several-matches-print-line-numbers-flag(self):
-    ;     self.assertMultiLineEqual(
-    ;         grep("may", "-n", [MIDSUMMERNIGHTFILENAME]),
-    ;         "3:Nor how it may concern my modesty,\n"
-    ;         "5:But I beseech your grace that I may know\n"
-    ;         "6:The worst that may befall me in this case,\n")
+(deftest test-one-file-several-matches-print-line-numbers-flag
+  (is (= (str "3:Nor how it may concern my modesty,\n"
+              "5:But I beseech your grace that I may know\n"
+              "6:The worst that may befall me in this case,\n")
+         (clj-grep.core/grep "may" "-n" [midsummer]))))
 
 (deftest test-one-file-several-matches-match-entire-lines-flag
   (is (= ""
