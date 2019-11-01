@@ -155,10 +155,9 @@
 (deftest test-multiple-files-no-matches-various-flags
   (is (= "" (clj-grep.core/grep "Frodo" "-n -l -x -i" original-file-names))))
 
-    ; def test-multiple-files-several-matches-file-flag-takes-precedence(self):
-    ;     self.assertMultiLineEqual(
-    ;         grep("who", "-n -l", ORIGINAL-FILENAMES),
-    ;         ILIADFILENAME + '\n' + PARADISELOSTFILENAME + '\n')
+(deftest test-multiple-files-several-matches-file-flag-takes-precedence
+  (is (= (str iliad "\n" paradise "\n")
+         (clj-grep.core/grep "who" "-n -l" original-file-names))))
 
 (deftest test-multiple-files-several-matches-inverted-match-entire-lines
   (is (= (str "iliad.txt:Achilles sing, O Goddess! Peleus' son;\n"
