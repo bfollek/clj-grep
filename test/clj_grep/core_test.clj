@@ -38,13 +38,13 @@
   (is (= "Of Atreus, Agamemnon, King of men.\n"
          (clj-grep.core/grep "Agamemnon" "" [iliad]))))
 
-; def test_one_file_one_match_print_line_numbers_flag(self):
+; def test-one-file-one-match-print-line-numbers-flag(self):
 ;         self.assertMultiLineEqual(
 ;             grep("Forbidden", "-n", [PARADISELOSTFILENAME]),
 ;             "2:Of that Forbidden Tree, whose mortal tast\n"
 ;         )
 
-(deftest test-one-file-one-match-case_insensitive_flag
+(deftest test-one-file-one-match-case-insensitive-flag
   (is (= "Of that Forbidden Tree, whose mortal tast\n"
          (clj-grep.core/grep "FORBIDDEN" "-i" [paradise]))))
 
@@ -56,7 +56,7 @@
   (is (= "With loss of Eden, till one greater Man\n"
          (clj-grep.core/grep "With loss of Eden, till one greater Man" "-x" [paradise]))))
 
-;  def test_one_file_one_match_multiple_flags(self):
+;  def test-one-file-one-match-multiple-flags(self):
 ;         self.assertMultiLineEqual(
 ;             grep("OF ATREUS, Agamemnon, KIng of MEN.",
 ;                  "-n -i -x", [ILIADFILENAME]),
@@ -68,7 +68,7 @@
               "The worst that may befall me in this case,\n")
          (clj-grep.core/grep "may" "" [midsummer]))))
 
-    ; def test_one_file_several_matches_print_line_numbers_flag(self):
+    ; def test-one-file-several-matches-print-line-numbers-flag(self):
     ;     self.assertMultiLineEqual(
     ;         grep("may", "-n", [MIDSUMMERNIGHTFILENAME]),
     ;         "3:Nor how it may concern my modesty,\n"
@@ -109,13 +109,13 @@
                "midsummer-night.txt:The worst that may befall me in this case,\n")
          (clj-grep.core/grep "may" "" original-file-names))))
 
-    ; def test_multiple_files_several_matches_print_line_numbers_flag(self):
+    ; def test-multiple-files-several-matches-print-line-numbers-flag(self):
     ;     expected = (
     ;         "midsummer-night.txt:5:But I beseech your grace that I may know\n"
     ;         "midsummer-night.txt:6:The worst that may befall me in this case,"
     ;         "\nparadise-lost.txt:2:Of that Forbidden Tree, whose mortal tast\n"
     ;         "paradise-lost.txt:6:Sing Heav'nly Muse, that on the secret top\n")
-    ;     self.assertMultiLineEqual(grep("that", "-n", ORIGINAL_FILENAMES), expected)
+    ;     self.assertMultiLineEqual(grep("that", "-n", ORIGINAL-FILENAMES), expected)
 
 (deftest test-multiple-files-one-match-print-file-names-flag
   (is (= (str iliad "\n" paradise "\n")
@@ -141,26 +141,23 @@
               "midsummer-night.txt:If I refuse to wed Demetrius.\n")
          (clj-grep.core/grep "a" "-v" original-file-names))))
 
-    ; def test_multiple_files_one_match_match_entire_lines_flag(self):
-    ;     self.assertMultiLineEqual(
-    ;         grep("But I beseech your grace that I may know", "-x", ORIGINAL_FILENAMES),
-    ;         "midsummer-night.txt:But I beseech your grace that I may know\n")
+(deftest test-multiple-files-one-match-match-entire-lines-flag
+  (is (=  "midsummer-night.txt:But I beseech your grace that I may know\n"
+          (clj-grep.core/grep "But I beseech your grace that I may know" "-x"
+                              original-file-names))))
 
-    ; def test_multiple_files_one_match_multiple_flags(self):
+    ; def test-multiple-files-one-match-multiple-flags(self):
     ;     self.assertMultiLineEqual(
     ;         grep("WITH LOSS OF EDEN, TILL ONE GREATER MAN",  "-n -i -x",
-    ;              ORIGINAL_FILENAMES),
+    ;              ORIGINAL-FILENAMES),
     ;         "paradise-lost.txt:4:With loss of Eden, till one greater Man\n")
 
-    ; def test_multiple_files_no_matches_various_flags(self):
-    ;     self.assertMultiLineEqual(
-    ;         grep("Frodo", "-n -l -x -i", ORIGINAL_FILENAMES),
-    ;         ""
-    ;     )
+(deftest test-multiple-files-no-matches-various-flags
+  (is (= "" (clj-grep.core/grep "Frodo" "-n -l -x -i" original-file-names))))
 
-    ; def test_multiple_files_several_matches_file_flag_takes_precedence(self):
+    ; def test-multiple-files-several-matches-file-flag-takes-precedence(self):
     ;     self.assertMultiLineEqual(
-    ;         grep("who", "-n -l", ORIGINAL_FILENAMES),
+    ;         grep("who", "-n -l", ORIGINAL-FILENAMES),
     ;         ILIADFILENAME + '\n' + PARADISELOSTFILENAME + '\n')
 
 (deftest test-multiple-files-several-matches-inverted-match-entire-lines
@@ -191,7 +188,7 @@
          (clj-grep.core/grep "Illustrious into Ades premature," "-x -v"
                              original-file-names))))
 
-(deftest test-one-file-same-line-repeats-print-file_names-flag
+(deftest test-one-file-same-line-repeats-print-file-names-flag
   (is (= "same-line-repeats.txt\n"
          (clj-grep.core/grep "linerep" "-l" [same-line]))))
 
