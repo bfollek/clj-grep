@@ -104,13 +104,12 @@
                "midsummer-night.txt:The worst that may befall me in this case,\n")
          (clj-grep.core/grep "may" "" original-file-names))))
 
-    ; def test-multiple-files-several-matches-print-line-numbers-flag(self):
-    ;     expected = (
-    ;         "midsummer-night.txt:5:But I beseech your grace that I may know\n"
-    ;         "midsummer-night.txt:6:The worst that may befall me in this case,"
-    ;         "\nparadise-lost.txt:2:Of that Forbidden Tree, whose mortal tast\n"
-    ;         "paradise-lost.txt:6:Sing Heav'nly Muse, that on the secret top\n")
-    ;     self.assertMultiLineEqual(grep("that", "-n", ORIGINAL-FILENAMES), expected)
+(deftest test-multiple-files-several-matches-print-line-numbers-flag
+  (is (= (str "midsummer-night.txt:5:But I beseech your grace that I may know\n"
+              "midsummer-night.txt:6:The worst that may befall me in this case,\n"
+              "paradise-lost.txt:2:Of that Forbidden Tree, whose mortal tast\n"
+              "paradise-lost.txt:6:Sing Heav'nly Muse, that on the secret top\n")
+         (clj-grep.core/grep "that" "-n" original-file-names))))
 
 (deftest test-multiple-files-one-match-print-file-names-flag
   (is (= (str iliad "\n" paradise "\n")
@@ -141,11 +140,9 @@
           (clj-grep.core/grep "But I beseech your grace that I may know" "-x"
                               original-file-names))))
 
-    ; def test-multiple-files-one-match-multiple-flags(self):
-    ;     self.assertMultiLineEqual(
-    ;         grep("WITH LOSS OF EDEN, TILL ONE GREATER MAN",  "-n -i -x",
-    ;              ORIGINAL-FILENAMES),
-    ;         "paradise-lost.txt:4:With loss of Eden, till one greater Man\n")
+(deftest test-multiple-files-one-match-multiple-flags
+  (is (= "paradise-lost.txt:4:With loss of Eden, till one greater Man\n"
+         (clj-grep.core/grep "WITH LOSS OF EDEN, TILL ONE GREATER MAN"  "-n -i -x" original-file-names))))
 
 (deftest test-multiple-files-no-matches-various-flags
   (is (= "" (clj-grep.core/grep "Frodo" "-n -l -x -i" original-file-names))))
