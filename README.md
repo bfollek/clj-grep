@@ -1,14 +1,24 @@
 # clj-grep
 
-A Clojure library designed to ... well, that part is up to you.
+Lightweight grep based on an exercism.io python exercise.
 
 ## Usage
 
-FIXME
+```
+clj-grep.core=> (grep "ACHILLES" "-i" ["iliad.txt"])
+"Achilles sing, O Goddess! Peleus' son;\nThe noble Chief Achilles from the son\n"
+
+clj-grep.core=> cli-options
+[["-x" "--entire-lines" :default false]
+ ["-i" "--ignore-case" :default false]
+ ["-v" "--invert" :default false]
+ ["-n" "--line-numbers" :default false]
+ ["-l" "--only-names" :default false]]
+```
 
 ## License
 
-Copyright © 2019 FIXME
+Copyright © 2019 Bob Follek
 
 This program and the accompanying materials are made available under the
 terms of the Eclipse Public License 2.0 which is available at
